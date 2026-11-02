@@ -7,12 +7,11 @@ const bareUrl = (location.protocol === "https:" ? "https" : "http") + "://" + lo
 
 
 var transport = "/libcurl/index.mjs";
-const { ScramjetController } = typeof $scramjetLoadController !== 'undefined' ? $scramjetLoadController() : {
-    ScramjetController: class {
-        init() { }
-        encodeUrl(url: string) { return url; }
-    } as any
-};
+const loadController = (globalThis as any).$scramjetLoadController;
+if (typeof loadController !== 'function') {
+    throw new Error('Scramjet controller failed to load');
+}
+const { ScramjetController } = loadController();
 
 if (localStorage.getItem('transport') === 'lib') {
     transport = '/libcurl/index.mjs';
@@ -36,27 +35,30 @@ const scramjet = new ScramjetController({
     prefix: '/$/'
 });
 
-if (scramjet.init) scramjet.init();
-export const swReady = new Promise<void>((resolve) => {
+const controllerReady = Promise.resolve(scramjet.init());
+const serviceWorkerReady = controllerReady.then(() => new Promise<void>((resolve, reject) => {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').then(() => {
+        navigator.serviceWorker.register('/sw.js').then(async () => {
+            await navigator.serviceWorker.ready;
             if (navigator.serviceWorker.controller) {
                 resolve();
             } else {
-                navigator.serviceWorker.addEventListener('controllerchange', () => resolve());
+                navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true });
             }
-        });
+        }).catch(reject);
     } else {
         resolve();
     }
-});
+}));
 
 const bmc = new BareMuxConnection("/baremux/worker.js");
-(async () => {
+const transportReady = (async () => {
     if (!await bmc.getTransport()) {
         await bmc.setTransport(transport, [{ wisp: wispUrl }]);
     }
 })();
+
+export const swReady = Promise.all([serviceWorkerReady, transportReady]).then(() => undefined);
 
 function getProxyEngine(): string {
     try {

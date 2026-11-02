@@ -1,124 +1,77 @@
-import dummyProxy from "./encoding";
+import proxy, { swReady } from "./proxy";
 
-const gameFrame = document.getElementById('game-frame') as HTMLIFrameElement;
-const gameTitleElement = document.getElementById('game-title') as HTMLHeadingElement;
-const gameIconElement = document.getElementById('game-icon') as HTMLImageElement;
-const gameContainer = document.getElementById('game-container') as HTMLDivElement;
-const fullscreenBtn = document.getElementById('fullscreen-btn') as HTMLButtonElement;
-const backBtn = document.getElementById('back-btn') as HTMLButtonElement;
-const reloadBtn = document.getElementById('reload-btnp') as HTMLButtonElement;
+const gameFrame = document.getElementById("game-frame") as HTMLIFrameElement;
+const gameTitleElement = document.getElementById("game-title") as HTMLHeadingElement;
+const gameIconElement = document.getElementById("game-icon") as HTMLImageElement;
+const gameContainer = document.getElementById("game-container") as HTMLDivElement;
+const fullscreenButton = document.getElementById("fullscreen-btn") as HTMLButtonElement;
+const reloadButton = document.getElementById("reload-btnp") as HTMLButtonElement;
+const gameStatus = document.getElementById("game-status") as HTMLParagraphElement;
 
-// Get URL parameters
-const urlParams = new URLSearchParams(window.location.search);
-const gameUrl = urlParams.get('url');
-const gameTitle = urlParams.get('title');
-const gameIcon = urlParams.get('icon');
-const proxy = urlParams.get('proxy');
+const params = new URLSearchParams(location.search);
+const gameUrl = params.get("url");
+const gameTitle = params.get("title");
+const gameIcon = params.get("icon");
 
-// Load game data
+gameTitleElement.textContent = gameTitle || "Game";
+gameIconElement.src = gameIcon || "/img/obsidian.svg";
+gameIconElement.alt = `${gameTitle || "Game"} icon`;
+
 if (gameUrl) {
-    if (gameUrl.startsWith('https://') || gameUrl.startsWith('http://') || proxy === "true") {
-
-        gameFrame.src = dummyProxy.encodeUrl(gameUrl);
-
-    } else {
-        gameFrame.src = String(gameUrl);
-    }
-    gameTitleElement.textContent = String(gameTitle || 'Game');
-    gameIconElement.src = String(gameIcon || '/favicon.svg');
-    gameIconElement.alt = `${gameTitle} icon`;
+	try {
+		const destination = new URL(gameUrl);
+		if (!["http:", "https:"].includes(destination.protocol)) throw new Error("Unsupported game URL protocol");
+		void swReady.then(() => {
+			gameFrame.src = proxy.encodeUrl(destination.href);
+		}).catch(error => {
+			gameTitleElement.textContent = "Proxy failed to initialize";
+			gameStatus.textContent = "The proxy could not start. Reload the page and try again.";
+			console.error("Proxy initialization failed:", error);
+		});
+	} catch (error) {
+		gameTitleElement.textContent = "Invalid game URL";
+		gameStatus.textContent = "Choose a game from the games library.";
+		console.error("Invalid game URL:", error);
+	}
 } else {
-    gameTitleElement.textContent = 'No game selected';
-    console.error('No game URL provided');
+	gameTitleElement.textContent = "No game selected";
+	gameStatus.textContent = "Choose a game from the games library.";
 }
 
-// Fullscreen functionality
-let isFullscreen = false;
-
-fullscreenBtn.addEventListener('click', () => {
-    toggleFullscreen();
+fullscreenButton.addEventListener("click", async () => {
+	try {
+		if (document.fullscreenElement === gameContainer) {
+			await document.exitFullscreen();
+		} else {
+			await gameContainer.requestFullscreen();
+		}
+	} catch (error) {
+		gameStatus.textContent = "Fullscreen is not available in this browser.";
+		console.error("Game fullscreen failed:", error);
+	}
 });
 
-// Back functionality
-backBtn.addEventListener('click', () => {
-    window.location.href = '/games';
+document.addEventListener("fullscreenchange", () => {
+	const isFullscreen = document.fullscreenElement === gameContainer;
+	fullscreenButton.title = isFullscreen ? "Exit fullscreen" : "Fullscreen";
+	fullscreenButton.setAttribute("aria-label", isFullscreen ? "Exit fullscreen" : "Enter fullscreen");
 });
 
-function toggleFullscreen() {
-    if (!isFullscreen) {
-        // Enter fullscreen
-        if (gameContainer.requestFullscreen) {
-            gameContainer.requestFullscreen();
-        } else if ((gameContainer as any).webkitRequestFullscreen) {
-            (gameContainer as any).webkitRequestFullscreen();
-        } else if ((gameContainer as any).msRequestFullscreen) {
-            (gameContainer as any).msRequestFullscreen();
-        }
-        gameContainer.classList.add('fullscreen');
-        isFullscreen = true;
-    } else {
-        // Exit fullscreen
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if ((document as any).webkitExitFullscreen) {
-            (document as any).webkitExitFullscreen();
-        } else if ((document as any).msExitFullscreen) {
-            (document as any).msExitFullscreen();
-        }
-        gameContainer.classList.remove('fullscreen');
-        isFullscreen = false;
-    }
-}
-
-// Listen for fullscreen changes (e.g., when user presses ESC)
-document.addEventListener('fullscreenchange', handleFullscreenChange);
-document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-document.addEventListener('msfullscreenchange', handleFullscreenChange);
-
-function handleFullscreenChange() {
-    if (!document.fullscreenElement &&
-        !(document as any).webkitFullscreenElement &&
-        !(document as any).msFullscreenElement) {
-        gameContainer.classList.remove('fullscreen');
-        isFullscreen = false;
-    }
-}
-
-// Reload functionality
-reloadBtn.addEventListener('click', () => {
-    if (gameFrame.src) {
-        // Add a subtle animation
-        gameFrame.style.opacity = '0.5';
-        gameFrame.src = gameFrame.src;
-
-        // Reset opacity after a brief moment
-        setTimeout(() => {
-            gameFrame.style.opacity = '1';
-        }, 300);
-    }
+reloadButton.addEventListener("click", () => {
+	if (gameFrame.src) gameFrame.src = gameFrame.src;
 });
 
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-    // F11 for fullscreen
-    if (e.key === 'F11') {
-        e.preventDefault();
-        toggleFullscreen();
-    }
-
-    // Ctrl/Cmd + R for reload
-    if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
-        e.preventDefault();
-        reloadBtn.click();
-    }
+gameFrame.addEventListener("load", () => {
+	gameStatus.textContent = "";
 });
 
-// Handle iframe load events
-gameFrame.addEventListener('load', () => {
-    console.log('Game loaded successfully');
-});
-
-gameFrame.addEventListener('error', () => {
-    console.error('Failed to load game');
-    gameTitleElement.textContent = 'Failed to load game';
+document.addEventListener("keydown", event => {
+	if (event.key === "F11") {
+		event.preventDefault();
+		fullscreenButton.click();
+	}
+	if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "r") {
+		event.preventDefault();
+		reloadButton.click();
+	}
 });

@@ -1,125 +1,202 @@
 ---
 import Layout from "../Layouts/Layout.astro";
-import Background from "../components/background.astro";
-import BoltIcon from "../components/boltIcon.astro";
-import time from "../scripts/time.ts";
 ---
 
-<Layout title="Home" proxy={true}>
-	<main>
-		<Background />
-
-		<div id="content">
-			<div id="ad-banner">
-				<div id="terra-1"></div>
-				<script type="text/javascript">
-					(function () {
-						setTimeout(function () {
-							var container = document.getElementById("terra-1");
-							if (!container) return;
-							atOptions = {
-								key: "69b10d3b9c8111006883499edda2a660",
-								format: "iframe",
-								height: 90,
-								width: 728,
-								params: {},
-							};
-							var s = document.createElement("script");
-							s.type = "text/javascript";
-							s.crossOrigin = "anonymous";
-							s.src =
-								"https://cutleryneighbouringpurpose.com/69b10d3b9c8111006883499edda2a660/invoke.js";
-							container.appendChild(s);
-						}, 1000);
-					})();
-				</script>
-			</div>
-
-			<div id="ad-popup" class="hidden">
-				<button id="ad-popup-close" aria-label="Close advertisement"
-					><svg
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							d="M17 7L7 17M7 7L17 17"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"></path>
-					</svg></button
+<Layout title="Obsidian" proxy={true}>
+	<main id="obsidian-home">
+		<h1>Obsidian</h1>
+		<p id="obsidian-credit">Made by Josh Boudreau, Design By Angelo Nelson</p>
+		<form id="obsidian-search" action="/browser" method="get">
+			<input
+				type="text"
+				name="url"
+				placeholder="Search or enter URL"
+				aria-label="Search or enter URL"
+				autocomplete="off"
+			/>
+			<button type="submit" aria-label="Search">
+				<svg
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
 				>
-				<div class="ad-tag-popup">Advertisement</div>
-				<div id="terra-2"></div>
-			</div>
-
-			<div id="top-wrapper">
-				<div id="top">
-					<h1 id="main-title">Bolt</h1>
-					<h2 id="greeting"></h2>
-					<h3 id="time">{time}</h3>
-				</div>
-				<div id="bottom">
-					<div id="searchbar">
-						<form id="search-form" method="POST">
-							<button type="submit">
-								<svg
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<path
-										d="M21 21L15.0001 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-										stroke="currentColor"
-										stroke-width="2"
-										stroke-linecap="round"
-										stroke-linejoin="round"></path>
-								</svg>
-							</button>
-							<input type="text" name="q" placeholder="Search" />
-						</form>
-					</div>
-				</div>
-			</div>
-			<div id="bottom-wrapper">
-				<div id="apps-tooltip" class="tooltip hidden">
-					<div class="tooltip-content">
-						<p>Click to go home</p>
-						<div class="tooltip-buttons">
-							<button id="tooltip-ok">OK</button>
-							<button id="tooltip-no-show"
-								>Don't show again</button
-							>
-						</div>
-					</div>
-					<div class="tooltip-arrow"></div>
-				</div>
-				<div id="app-menu">
-					<div id="app-menu-header">
-						<h1 id="app-menu-title">Bolt Apps</h1>
-					</div>
-					<div id="apps-grid"></div>
-				</div>
-				<div id="taskbar">
-					<div id="taskbar-left">
-						<div id="app-menu-button"><BoltIcon /></div>
-					</div>
-					<div id="taskbar-right"></div>
-				</div>
-			</div>
-		</div>
+					<path
+						d="M21 21L15 15M17 10A7 7 0 1 1 3 10A7 7 0 0 1 17 10Z"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			</button>
+		</form>
+		<nav id="obsidian-shortcuts" aria-label="Quick links">
+			<a class="obsidian-shortcut" href="/games" aria-label="Games" title="Games">
+				<svg viewBox="0 0 640 640" aria-hidden="true">
+					<path d="M448 128C554 128 640 214 640 320C640 426 554 512 448 512L192 512C86 512 0 426 0 320C0 214 86 128 192 128L448 128zM192 240C178.7 240 168 250.7 168 264L168 296L136 296C122.7 296 112 306.7 112 320C112 333.3 122.7 344 136 344L168 344L168 376C168 389.3 178.7 400 192 400C205.3 400 216 389.3 216 376L216 344L248 344C261.3 344 272 333.3 272 320C272 306.7 261.3 296 248 296L216 296L216 264C216 250.7 205.3 240 192 240zM432 336C414.3 336 400 350.3 400 368C400 385.7 414.3 400 432 400C449.7 400 464 385.7 464 368C464 350.3 449.7 336 432 336zM496 240C478.3 240 464 254.3 464 272C464 289.7 478.3 304 496 304C513.7 304 528 289.7 528 272C528 254.3 513.7 240 496 240z" />
+				</svg>
+				<span>Games</span>
+			</a>
+			<a class="obsidian-shortcut" href="/ai" aria-label="Chat" title="Chat">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z" />
+				</svg>
+				<span>Chat</span>
+			</a>
+			<a class="obsidian-shortcut" href="/settings" aria-label="Settings" title="Settings">
+				<svg viewBox="0 0 640 640" aria-hidden="true">
+					<path d="M259.1 73.5C262.1 58.7 275.2 48 290.4 48L350.2 48C365.4 48 378.5 58.7 381.5 73.5L396 143.5C410.1 149.5 423.3 157.2 435.3 166.3L503.1 143.8C517.5 139 533.3 145 540.9 158.2L570.8 210C578.4 223.2 575.7 239.8 564.3 249.9L511 297.3C511.9 304.7 512.3 312.3 512.3 320C512.3 327.7 511.8 335.3 511 342.7L564.4 390.2C575.8 400.3 578.4 417 570.9 430.1L541 481.9C533.4 495 517.6 501.1 503.2 496.3L435.4 473.8C423.3 482.9 410.1 490.5 396.1 496.6L381.7 566.5C378.6 581.4 365.5 592 350.4 592L290.6 592C275.4 592 262.3 581.3 259.3 566.5L244.9 496.6C230.8 490.6 217.7 482.9 205.6 473.8L137.5 496.3C123.1 501.1 107.3 495.1 99.7 481.9L69.8 430.1C62.2 416.9 64.9 400.3 76.3 390.2L129.7 342.7C128.8 335.3 128.4 327.7 128.4 320C128.4 312.3 128.9 304.7 129.7 297.3L76.3 249.8C64.9 239.7 62.3 223 69.8 209.9L99.7 158.1C107.3 144.9 123.1 138.9 137.5 143.7L205.3 166.2C217.4 157.1 230.6 149.5 244.6 143.4L259.1 73.5zM320.3 400C364.5 399.8 400.2 363.9 400 319.7C399.8 275.5 363.9 239.8 319.7 240C275.5 240.2 239.8 276.1 240 320.3C240.2 364.5 276.1 400.2 320.3 400z" />
+				</svg>
+				<span>Settings</span>
+			</a>
+			<a class="obsidian-shortcut" href="/appstore" aria-label="Apps" title="Apps">
+				<svg viewBox="0 0 640 640" aria-hidden="true">
+					<path d="M480 160L352 160L352 288L480 288L480 160zM544 288L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 160C96 124.7 124.7 96 160 96L480 96C515.3 96 544 124.7 544 160L544 288zM160 352L160 480L288 480L288 352L160 352zM288 288L288 160L160 160L160 288L288 288zM352 352L352 480L480 480L480 352L352 352z" />
+				</svg>
+				<span>Apps</span>
+			</a>
+			<a class="obsidian-shortcut" href="/music" aria-label="Music" title="Music">
+				<svg viewBox="0 0 640 640" aria-hidden="true">
+					<path d="M532 71C539.6 77.1 544 86.3 544 96L544 400C544 444.2 501 480 448 480C395 480 352 444.2 352 400C352 355.8 395 320 448 320C459.2 320 470 321.6 480 324.6L480 207.9L256 257.7L256 464C256 508.2 213 544 160 544C107 544 64 508.2 64 464C64 419.8 107 384 160 384C171.2 384 182 385.6 192 388.6L192 160C192 145 202.4 132 217.1 128.8L505.1 64.8C514.6 62.7 524.5 65 532.1 71.1z" />
+				</svg>
+				<span>Music</span>
+			</a>
+		</nav>
 	</main>
-	<script src="../scripts/time.ts"></script>
-	<script src="../scripts/index.ts"></script>
-	<script src="../scripts/global.ts"></script>
-	<script src="../scripts/app-menu.ts"></script>
-	<script src="../scripts/taskbar.ts"></script>
-	<script src="../scripts/tooltip.ts"></script>
-	<script src="../scripts/discord.ts"></script>
-	<script src="../scripts/ad-popup.ts"></script>
 </Layout>
+
+<style is:global>
+	html,
+	body {
+		min-height: 100%;
+		margin: 0;
+		background: #000;
+		color: #fff;
+	}
+
+	#obsidian-home {
+		min-height: 100vh;
+		padding: 2rem 1.25rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 2rem;
+		background: #000;
+		color: #fff;
+	}
+
+	#obsidian-home h1 {
+		margin: 0;
+		color: #fff;
+		font-family: "Space Grotesk", sans-serif;
+		font-size: 4.5rem;
+	}
+
+	#obsidian-credit {
+		margin: -1.5rem 0 0;
+		color: #aaa;
+		font-size: 0.875rem;
+	}
+
+	#obsidian-search {
+		width: min(680px, 100%);
+		min-height: 68px;
+		display: flex;
+		align-items: center;
+		border: 1px solid #fff;
+		border-radius: 12px;
+		background: #000;
+	}
+
+	#obsidian-search input {
+		min-width: 0;
+		flex: 1;
+		padding: 1rem 1.25rem;
+		border: 0;
+		outline: 0;
+		background: transparent;
+		color: #fff;
+		font: inherit;
+		font-size: 1.15rem;
+	}
+
+	#obsidian-search input::placeholder {
+		color: #fff;
+		opacity: 0.7;
+	}
+
+	#obsidian-search button {
+		width: 64px;
+		min-height: 66px;
+		flex: 0 0 64px;
+		display: grid;
+		place-items: center;
+		border: 0;
+		background: transparent;
+		color: #fff;
+		cursor: pointer;
+	}
+
+	#obsidian-search:focus-within {
+		outline: 2px solid #fff;
+		outline-offset: 3px;
+	}
+
+	#obsidian-shortcuts {
+		width: min(680px, 100%);
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: 0.75rem;
+	}
+
+	.obsidian-shortcut {
+		min-height: 84px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		border: 1px solid #555;
+		border-radius: 10px;
+		color: #fff;
+		text-decoration: none;
+		transition: background-color 150ms ease, border-color 150ms ease;
+	}
+
+	.obsidian-shortcut:hover,
+	.obsidian-shortcut:focus-visible {
+		border-color: #fff;
+		background: #fff1;
+	}
+
+	.obsidian-shortcut svg {
+		width: 24px;
+		height: 24px;
+		fill: currentColor;
+	}
+
+	.obsidian-shortcut span {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	@media (max-width: 520px) {
+		#obsidian-home h1 {
+			font-size: 3rem;
+		}
+
+		#obsidian-shortcuts {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+</style>
