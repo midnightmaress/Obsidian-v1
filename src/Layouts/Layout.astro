@@ -1,14 +1,12 @@
 ---
 import "../styles/global.css";
-import ParticleField from "../components/particleField.astro";
 
 export interface Props {
 	title: string;
 	proxy?: boolean;
-	particles?: boolean;
 }
 
-const { title, proxy = false, particles = true } = Astro.props;
+const { title, proxy = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -16,6 +14,12 @@ const { title, proxy = false, particles = true } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script is:inline>
+			try {
+				const theme = localStorage.getItem("obsidian-theme");
+				if (["midnight", "frost", "ocean", "sunset"].includes(theme || "")) document.documentElement.dataset.theme = theme;
+			} catch {}
+		</script>
 		<link rel="icon" type="image/svg+xml" href="/img/obsidian.svg" />
 		<meta name="theme-color" content="#050605" />
 		<meta name="generator" content={Astro.generator} />
@@ -29,7 +33,24 @@ const { title, proxy = false, particles = true } = Astro.props;
 		)}
 	</head>
 	<body>
-		{particles && <ParticleField />}
 		<slot />
+		<script is:inline>
+			const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			if (!reduceMotion()) {
+				document.body.classList.add("page-entering");
+				document.body.addEventListener("animationend", () => document.body.classList.remove("page-entering"), { once: true });
+			}
+				document.addEventListener("click", event => {
+					const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+				if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || link.hasAttribute("download")) return;
+				const destination = new URL(link.href, location.href);
+				if (destination.origin !== location.origin || destination.pathname === location.pathname && destination.search === location.search) return;
+				if (!reduceMotion()) {
+					event.preventDefault();
+					document.body.classList.add("page-leaving");
+					window.setTimeout(() => location.assign(destination.href), 170);
+				}
+			}, true);
+		</script>
 	</body>
 </html>

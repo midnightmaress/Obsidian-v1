@@ -1,0 +1,145 @@
+import Layout from "../Layouts/Layout.astro";
+---
+<Layout title="Obsidian Chat">
+	<main class="app-shell chat-app">
+		<header class="app-header">
+			<a class="app-brand" href="/">
+				<img src="/img/obsidian.svg" alt="" />
+				<h1>Chat</h1>
+			</a>
+			<a class="icon-button" href="/" aria-label="Home" title="Home">
+				<svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1V10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
+			</a>
+		</header>
+		<section class="chat-workspace" aria-labelledby="chat-heading">
+			<div class="chat-heading-row">
+				<div>
+					<p class="eyebrow">OBSIDIAN ASSISTANT</p>
+					<h2 class="page-heading" id="chat-heading">Coming Soon</h2>
+				</div>
+				<button class="quiet-button" id="chat-clear" type="button" disabled>Clear chat</button>
+			</div>
+			<p id="chat-status" class="status-message" role="status" aria-live="polite">Messages are sent securely through the server.</p>
+			<div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
+				<p class="chat-welcome">Ask a question to start a conversation.</p>
+			</div>
+			<form id="chat-form" class="chat-form">
+				<label class="sr-only" for="chat-prompt">Message</label>
+				<textarea class="field" id="chat-prompt" rows="2" maxlength="4000" placeholder="Message Obsidian..." required></textarea>
+				<div class="chat-form-footer">
+					<span>Enter to send · Shift+Enter for a new line</span>
+					<button class="primary-button" id="chat-send" type="submit" disabled>
+						<svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+						Send
+					</button>
+				</div>
+			</form>
+		</section>
+	</main>
+	<script src="../scripts/chat.ts"></script>
+</Layout>
+<style is:global>
+	.chat-app {
+		width: min(100% - 2.5rem, 920px);
+		min-height: 100dvh;
+	}
+	.chat-workspace {
+		min-height: 0;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+	}
+	.chat-heading-row,
+	.chat-form-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	.chat-heading-row .page-heading {
+		margin-top: 0;
+		font-size: 1.45rem;
+	}
+	.chat-messages {
+		min-height: 36vh;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.75rem;
+		padding: 1rem;
+		border: 1px solid var(--obsidian-border);
+		border-radius: 22px;
+		background: var(--obsidian-glass);
+		-webkit-backdrop-filter: blur(20px) saturate(140%);
+		backdrop-filter: blur(20px) saturate(140%);
+		box-shadow: inset 0 1px var(--obsidian-highlight);
+		overflow-y: auto;
+	}
+	.chat-message,
+	.chat-welcome {
+		max-width: min(82%, 720px);
+		margin: 0;
+		padding: 0.8rem 1rem;
+		border: 1px solid var(--obsidian-border);
+		border-radius: 18px;
+		background: var(--obsidian-control);
+		color: var(--obsidian-text);
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+	}
+	.chat-message[data-role="user"] {
+		align-self: flex-end;
+		border-color: var(--obsidian-accent-border);
+		background: var(--obsidian-accent-subtle);
+	}
+	.chat-welcome {
+		max-width: 100%;
+		border: 0;
+		background: transparent;
+		color: var(--obsidian-muted);
+	}
+	.chat-form {
+		display: grid;
+		gap: 0.6rem;
+		padding: 0.75rem;
+		border: 1px solid var(--obsidian-border);
+		border-radius: 20px;
+		background: var(--obsidian-glass);
+		-webkit-backdrop-filter: blur(18px) saturate(140%);
+		backdrop-filter: blur(18px) saturate(140%);
+		box-shadow: inset 0 1px var(--obsidian-highlight), 0 14px 36px var(--obsidian-shadow);
+	}
+	.chat-form textarea {
+		min-height: 56px;
+		padding: 0.6rem 0.7rem;
+		border: 0;
+		border-radius: 12px;
+		background: transparent;
+		box-shadow: none;
+		resize: vertical;
+	}
+	.chat-form-footer > span {
+		color: var(--obsidian-muted);
+		font-size: 0.75rem;
+	}
+	.chat-form .primary-button {
+		min-height: 38px;
+		padding: 0.5rem 0.85rem;
+	}
+	.chat-form button:disabled,
+	.chat-heading-row button:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+	@media (max-width: 560px) {
+		.chat-app {
+			width: min(100% - 1.25rem, 920px);
+			padding-block: 1.1rem;
+		}
+		.chat-message {
+			max-width: 96%;
+		}
+	}
+</style>

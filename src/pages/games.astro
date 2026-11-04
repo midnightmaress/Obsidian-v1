@@ -10,6 +10,8 @@ import Layout from "../Layouts/Layout.astro";
 				<h1>Games</h1>
 			</a>
 			<div class="app-actions">
+				<a class="quiet-button" href="https://github.com/gmshelf/ugs" target="_blank" rel="noopener noreferrer" title="Browse GMShelf's game catalog">GMShelf</a>
+				<a class="quiet-button" href="https://www.raccoongame.com/" target="_blank" rel="noopener noreferrer" title="Open the official cloud gaming service">Cloud gaming</a>
 				<a class="icon-button" href="/" aria-label="Home" title="Home">
 					<svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1V10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
 				</a>
@@ -21,6 +23,7 @@ import Layout from "../Layouts/Layout.astro";
 				<option value="all">All sources</option>
 				<option value="noahs">Noah's Calculus Tutor</option>
 				<option value="ugs">UGS Files Sorted</option>
+				<option value="gmshelf">GMShelf</option>
 			</select>
 		</div>
 		<p id="games-status" class="status-message" role="status" aria-live="polite">Loading game catalog...</p>

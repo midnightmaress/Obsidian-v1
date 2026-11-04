@@ -55,6 +55,7 @@ document.addEventListener("fullscreenchange", () => {
 	const isFullscreen = document.fullscreenElement === gameContainer;
 	fullscreenButton.title = isFullscreen ? "Exit fullscreen" : "Fullscreen";
 	fullscreenButton.setAttribute("aria-label", isFullscreen ? "Exit fullscreen" : "Enter fullscreen");
+	fullscreenButton.setAttribute("aria-pressed", String(isFullscreen));
 });
 
 reloadButton.addEventListener("click", () => {

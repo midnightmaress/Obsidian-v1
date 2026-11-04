@@ -33,15 +33,36 @@ import Layout from "../Layouts/Layout.astro";
 			</button>
 		</form>
 		<nav id="obsidian-shortcuts" aria-label="Quick links">
+			<a class="obsidian-shortcut" href="/browser" aria-label="Browser" title="Browser">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7" />
+					<path d="m15.8 8.2-2.2 5.4-5.4 2.2 2.2-5.4 5.4-2.2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+				</svg>
+				<span>Browser</span>
+			</a>
 			<a class="obsidian-shortcut" href="/games" aria-label="Games" title="Games">
 				<svg viewBox="0 0 640 640" aria-hidden="true">
 					<path d="M448 128C554 128 640 214 640 320C640 426 554 512 448 512L192 512C86 512 0 426 0 320C0 214 86 128 192 128L448 128zM192 240C178.7 240 168 250.7 168 264L168 296L136 296C122.7 296 112 306.7 112 320C112 333.3 122.7 344 136 344L168 344L168 376C168 389.3 178.7 400 192 400C205.3 400 216 389.3 216 376L216 344L248 344C261.3 344 272 333.3 272 320C272 306.7 261.3 296 248 296L216 296L216 264C216 250.7 205.3 240 192 240zM432 336C414.3 336 400 350.3 400 368C400 385.7 414.3 400 432 400C449.7 400 464 385.7 464 368C464 350.3 449.7 336 432 336zM496 240C478.3 240 464 254.3 464 272C464 289.7 478.3 304 496 304C513.7 304 528 289.7 528 272C528 254.3 513.7 240 496 240z" />
 				</svg>
 				<span>Games</span>
 			</a>
-			<a class="obsidian-shortcut" href="/ai" aria-label="Chat" title="Chat">
+			<a class="obsidian-shortcut" href="/movies" aria-label="Movies" title="Movies">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.7" />
+					<path d="M7 4v16M17 4v16M3 9h4m-4 6h4m10-6h4m-4 6h4" fill="none" stroke="currentColor" stroke-width="1.7" />
+				</svg>
+				<span>Movies</span>
+			</a>
+			<a class="obsidian-shortcut" href="/ai" aria-label="AI" title="AI">
 				<svg viewBox="0 0 24 24" aria-hidden="true">
 					<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z" />
+				</svg>
+				<span>AI</span>
+			</a>
+			<a class="obsidian-shortcut" href="/chat" aria-label="Chat" title="Chat">
+				<svg viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2 1.5-4A7.5 7.5 0 1 1 20 11.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+					<path d="M8 11.5h8M8 14.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
 				</svg>
 				<span>Chat</span>
 			</a>
@@ -72,43 +93,49 @@ import Layout from "../Layouts/Layout.astro";
 	body {
 		min-height: 100%;
 		margin: 0;
-		background: #000;
-		color: #fff;
+		background-color: var(--obsidian-bg);
+		color: var(--obsidian-text);
 	}
 
 	#obsidian-home {
-		min-height: 100vh;
-		padding: 2rem 1.25rem;
+		min-height: 100svh;
+		padding: 3rem 1.25rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 2rem;
-		background: #000;
-		color: #fff;
+		gap: 1.5rem;
+		background: transparent;
+		color: var(--obsidian-text);
 	}
 
 	#obsidian-home h1 {
 		margin: 0;
-		color: #fff;
-		font-family: "Space Grotesk", sans-serif;
-		font-size: 4.5rem;
+		color: var(--obsidian-text);
+		font-family: inherit;
+		font-size: clamp(3.5rem, 5rem, 5rem);
+		line-height: 1;
+		letter-spacing: 0;
 	}
 
 	#obsidian-credit {
-		margin: -1.5rem 0 0;
-		color: #aaa;
+		margin: -0.75rem 0 0;
+		color: var(--obsidian-muted);
 		font-size: 0.875rem;
 	}
 
 	#obsidian-search {
-		width: min(680px, 100%);
-		min-height: 68px;
+		width: min(720px, 100%);
+		min-height: 64px;
 		display: flex;
 		align-items: center;
-		border: 1px solid #fff;
-		border-radius: 12px;
-		background: #000;
+		border: 1px solid var(--obsidian-border);
+		border-radius: 16px;
+		background: var(--obsidian-glass);
+		-webkit-backdrop-filter: blur(18px) saturate(140%);
+		backdrop-filter: blur(18px) saturate(140%);
+		box-shadow: 0 18px 60px var(--obsidian-shadow), inset 0 1px var(--obsidian-highlight);
+		transition: border-color 180ms ease, box-shadow 180ms ease;
 	}
 
 	#obsidian-search input {
@@ -118,13 +145,13 @@ import Layout from "../Layouts/Layout.astro";
 		border: 0;
 		outline: 0;
 		background: transparent;
-		color: #fff;
+		color: var(--obsidian-muted);
 		font: inherit;
 		font-size: 1.15rem;
 	}
 
 	#obsidian-search input::placeholder {
-		color: #fff;
+		color: var(--obsidian-text);
 		opacity: 0.7;
 	}
 
@@ -136,40 +163,50 @@ import Layout from "../Layouts/Layout.astro";
 		place-items: center;
 		border: 0;
 		background: transparent;
-		color: #fff;
+		color: var(--obsidian-text);
 		cursor: pointer;
 	}
 
 	#obsidian-search:focus-within {
-		outline: 2px solid #fff;
-		outline-offset: 3px;
+		border-color: var(--obsidian-accent-strong);
+		box-shadow: 0 0 0 3px var(--obsidian-accent-glow), 0 18px 60px var(--obsidian-shadow);
 	}
 
 	#obsidian-shortcuts {
-		width: min(680px, 100%);
+		width: min(900px, 100%);
 		display: grid;
-		grid-template-columns: repeat(5, minmax(0, 1fr));
-		gap: 0.75rem;
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+		gap: 0.8rem;
+	}
+
+	#obsidian-shortcuts a[href="/appstore"] {
+		display: none;
 	}
 
 	.obsidian-shortcut {
-		min-height: 84px;
+		min-height: 96px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 0.5rem;
-		border: 1px solid #555;
-		border-radius: 10px;
-		color: #fff;
+		gap: 0.65rem;
+		border: 1px solid var(--obsidian-border);
+		border-radius: 14px;
+		background: var(--obsidian-glass);
+		-webkit-backdrop-filter: blur(14px) saturate(140%);
+		backdrop-filter: blur(14px) saturate(140%);
+		color: var(--obsidian-text);
 		text-decoration: none;
-		transition: background-color 150ms ease, border-color 150ms ease;
+		box-shadow: inset 0 1px var(--obsidian-highlight);
+		transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 	}
 
 	.obsidian-shortcut:hover,
 	.obsidian-shortcut:focus-visible {
-		border-color: #fff;
-		background: #fff1;
+		transform: translateY(-3px);
+		border-color: var(--obsidian-accent-strong);
+		background: var(--obsidian-accent-subtle);
+		box-shadow: 0 12px 30px var(--obsidian-shadow), inset 0 1px var(--obsidian-highlight);
 	}
 
 	.obsidian-shortcut svg {
@@ -179,24 +216,25 @@ import Layout from "../Layouts/Layout.astro";
 	}
 
 	.obsidian-shortcut span {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
+		font-size: 0.9rem;
+		font-weight: 600;
 	}
 
 	@media (max-width: 520px) {
-		#obsidian-home h1 {
-			font-size: 3rem;
-		}
-
 		#obsidian-shortcuts {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 380px) {
+		#obsidian-shortcuts {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 380px) {
+		#obsidian-shortcuts {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 </style>

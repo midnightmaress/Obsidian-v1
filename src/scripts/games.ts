@@ -1,6 +1,6 @@
 interface GameEntry {
 	name: string;
-	source: "noahs" | "ugs";
+	source: "noahs" | "ugs" | "gmshelf";
 	url: string;
 	image: string;
 	description: string;
@@ -10,6 +10,7 @@ const githubApi = "https://api.github.com/repos";
 const noahsBase = "https://cdn.jsdelivr.net/gh/NoahsAmazingTutoringHelp/Noahs-Calculus-Tutor@master";
 const noahsPages = "https://noahsamazingtutoringhelp.github.io/Noahs-Calculus-Tutor";
 const ugsCdn = "https://cdn.jsdelivr.net/gh/brickyosu/ugs-files-sorted@main";
+const gmshelfCdn = "https://cdn.jsdelivr.net/gh/gmshelf/ugs@main";
 const gamesGrid = document.getElementById("games-grid") as HTMLDivElement;
 const searchInput = document.getElementById("games-search") as HTMLInputElement;
 const sourceSelect = document.getElementById("games-source") as HTMLSelectElement;
@@ -54,7 +55,7 @@ async function loadNoahsGames(): Promise<GameEntry[]> {
 	]);
 	if (!treeResponse.ok || !catalogResponse.ok) throw new Error("Noah's game source is unavailable");
 	const [tree, catalogSource] = await Promise.all([treeResponse.json(), catalogResponse.text()]);
-	const availableFiles = new Set((tree.tree || []).map((file: any) => file.path));
+	const availableFiles = new Set<string>((tree.tree || []).map((file: { path: string }) => file.path));
 	const metadataByFile = new Map<string, { title: string; image?: string; description?: string }>();
 	const covers = new Set([...availableFiles].filter(path => /^images\/.*\.(?:png|jpe?g|webp|gif)$/i.test(path)));
 
@@ -120,6 +121,21 @@ async function loadUgsGames(): Promise<GameEntry[]> {
 		});
 }
 
+async function loadGmshelfGames(): Promise<GameEntry[]> {
+	const response = await fetch(`${gmshelfCdn}/ugs.json`);
+	if (!response.ok) throw new Error("GMShelf game source is unavailable");
+	const entries = await response.json() as { name?: string; url?: string }[];
+	return entries
+		.filter(entry => typeof entry.name === "string" && typeof entry.url === "string" && /^\/ugs\/.*\.html?$/i.test(entry.url))
+		.map(entry => ({
+			name: entry.name!,
+			source: "gmshelf" as const,
+			url: `${gmshelfCdn}${entry.url}`,
+			image: generatedCover(entry.name!),
+			description: "GMShelf",
+		}));
+}
+
 function renderGames(): void {
 	const query = searchInput.value.trim().toLowerCase();
 	const source = sourceSelect.value;
@@ -163,11 +179,11 @@ sourceSelect.addEventListener("change", renderGames);
 
 async function init(): Promise<void> {
 	gamesStatus.textContent = "Loading game catalogs...";
-	const results = await Promise.allSettled([loadNoahsGames(), loadUgsGames()]);
+	const results = await Promise.allSettled([loadNoahsGames(), loadUgsGames(), loadGmshelfGames()]);
 	const failures: string[] = [];
 	results.forEach((result, index) => {
 		if (result.status === "fulfilled") games.push(...result.value);
-		else failures.push(index === 0 ? "Noah's source" : "UGS source");
+		else failures.push(["Noah's source", "UGS source", "GMShelf"][index]);
 	});
 	const coversByTitle = new Map(
 		games
@@ -175,7 +191,7 @@ async function init(): Promise<void> {
 			.map(game => [normalizeGameTitle(game.name), game.image]),
 	);
 	for (const game of games) {
-		if (game.source !== "ugs") continue;
+		if (game.source === "noahs") continue;
 		const cover = coversByTitle.get(normalizeGameTitle(game.name));
 		if (cover) game.image = cover;
 	}

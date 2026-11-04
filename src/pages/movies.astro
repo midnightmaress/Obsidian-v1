@@ -1,0 +1,36 @@
+---
+import Layout from "../Layouts/Layout.astro";
+---
+
+<Layout title="Obsidian Movies">
+	<main class="app-shell media-app" id="movies-app">
+		<header class="app-header">
+			<a class="app-brand" href="/">
+				<img src="/img/obsidian.svg" alt="" />
+				<h1>Movies</h1>
+			</a>
+			<a class="icon-button" href="/" aria-label="Home" title="Home">
+				<svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1V10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
+			</a>
+		</header>
+		<section class="media-workspace" aria-labelledby="movies-heading">
+			<div class="media-title-row">
+				<div>
+					<p class="eyebrow">YOUR SCREENING ROOM</p>
+					<h2 id="movies-heading" class="page-heading">Movie player</h2>
+				</div>
+				<a class="quiet-button" href="https://archive.org/details/feature_films" target="_blank" rel="noopener noreferrer">Public-domain films</a>
+			</div>
+			<form id="movie-form" class="media-url-form">
+				<label class="sr-only" for="movie-url">Movie or trailer embed URL</label>
+				<input id="movie-url" class="field" type="url" placeholder="Paste an authorized embed URL" required />
+				<button class="primary-button" type="submit">Open</button>
+			</form>
+			<p id="movie-status" class="status-message" role="status" aria-live="polite">Only play media you have permission to access.</p>
+			<div id="movie-stage" class="movie-stage" hidden>
+				<iframe id="movie-frame" title="Movie or trailer" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="no-referrer" allowfullscreen></iframe>
+			</div>
+		</section>
+	</main>
+	<script src="../scripts/movies.ts"></script>
+</Layout>

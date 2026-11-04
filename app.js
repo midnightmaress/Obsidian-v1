@@ -5,6 +5,8 @@ import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { join } from "node:path";
 import { hostname } from "node:os";
 import { server as wisp } from "@mercuryworkshop/wisp-js/server";
+import { WebSocketServer } from "ws";
+import { attachChatSocket, handleChatApi } from "./src/server/chat-room.js";
 
 
 
@@ -16,6 +18,7 @@ const publicPath = join(__dirname, "dist");
 const fastify = Fastify({
     logger: true,
 });
+const chatSockets = new WebSocketServer({ noServer: true, maxPayload: 2 * 1024 * 1024 });
 
 fastify.addHook("onSend", async (request, reply, payload) => {
     reply.header("Cross-Origin-Opener-Policy", "same-origin");
@@ -23,7 +26,17 @@ fastify.addHook("onSend", async (request, reply, payload) => {
     return payload;
 });
 fastify.server.on("upgrade", (req, socket, head) => {
-    wisp.routeRequest(req, socket, head);
+    const pathname = new URL(req.url, "http://localhost").pathname;
+    if (pathname === "/chat-ws") {
+        try {
+            if (req.headers.origin && new URL(req.headers.origin).host !== req.headers.host) return socket.destroy();
+        } catch {
+            return socket.destroy();
+        }
+        chatSockets.handleUpgrade(req, socket, head, client => attachChatSocket(client, req));
+        return;
+    }
+    if (pathname.startsWith("/wisp/")) wisp.routeRequest(req, socket, head);
 });
 
 
@@ -59,28 +72,14 @@ fastify.get("/", (request, reply) => {
     return reply.sendFile("index.html");
 });
 
+const chatApiHandler = async (request, reply) => {
+    reply.hijack();
+    request.raw.chatBody = request.body;
+    await handleChatApi(request.raw, reply.raw);
+};
+fastify.all("/api/chat", chatApiHandler);
+fastify.all("/api/chat/*", chatApiHandler);
 
-fastify.post("/api/chat", async (request, reply) => {
-    const apiKey = process.env.OPENROUTER_API_KEY;
-
-    if (!apiKey) {
-        return reply.status(500).send({ error: "API key not configured on server." });
-    }
-
-    const upstream = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-            "HTTP-Referer": request.headers["origin"] ?? "",
-            "X-Title": "Bolt AI",
-        },
-        body: JSON.stringify(request.body),
-    });
-
-    const data = await upstream.json();
-    return reply.status(upstream.status).send(data);
-});
 
 fastify.post("/api/deepreset", async (request, reply) => {
     const cookieNames = ["session", "auth-token", "refresh-token"];

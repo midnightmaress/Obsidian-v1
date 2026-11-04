@@ -17,7 +17,7 @@ import Layout from "../Layouts/Layout.astro";
 				<button class="icon-button" id="reload-btnp" type="button" aria-label="Reload game" title="Reload game">
 					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5m-4.1-2a7 7 0 0 1 11.6-3L20 12M4 12l3.5 5a7 7 0 0 0 11.6-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
 				</button>
-				<button class="icon-button" id="fullscreen-btn" type="button" aria-label="Toggle fullscreen" title="Fullscreen">
+				<button class="icon-button" id="fullscreen-btn" type="button" aria-label="Enter fullscreen" aria-pressed="false" title="Fullscreen">
 					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
 				</button>
 			</div>
@@ -58,5 +58,11 @@ import Layout from "../Layouts/Layout.astro";
 		height: 100%;
 		border: 0;
 		background: #000;
+	}
+
+	#game-container:fullscreen #game-frame {
+		width: 100vw;
+		height: 100vh;
+		height: 100dvh;
 	}
 </style>

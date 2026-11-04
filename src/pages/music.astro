@@ -2,8 +2,8 @@
 import Layout from "../Layouts/Layout.astro";
 ---
 
-<Layout title="Obsidian Music" particles={false}>
-	<main class="app-shell coming-soon-page">
+<Layout title="Obsidian Music">
+	<main class="app-shell media-app" id="music-app">
 		<header class="app-header">
 			<a class="app-brand" href="/">
 				<img src="/img/obsidian.svg" alt="" />
@@ -13,9 +13,48 @@ import Layout from "../Layouts/Layout.astro";
 				<svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1V10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
 			</a>
 		</header>
-		<section class="coming-soon-message" aria-labelledby="coming-soon-title">
-			<h2 id="coming-soon-title">Coming Soon</h2>
-			<p>Music is not available yet.</p>
+		<section class="music-workspace" aria-labelledby="music-heading">
+			<div class="media-title-row">
+				<div>
+					<p class="eyebrow">YOUR LIBRARY</p>
+					<h2 id="music-heading" class="page-heading">Music player</h2>
+				</div>
+				<div class="app-actions">
+					<button class="quiet-button" id="music-clear" type="button" disabled>Clear</button>
+					<button class="primary-button" id="music-add" type="button">Add music</button>
+				</div>
+			</div>
+			<input id="music-files" class="sr-only" type="file" accept="audio/*" multiple />
+			<div class="music-layout">
+				<section class="music-queue-panel" aria-label="Playlist">
+					<div class="queue-heading"><h3>Queue</h3><span id="music-count">0 tracks</span></div>
+					<ol id="music-queue" class="music-queue">
+						<li class="queue-empty">Your selected audio files will appear here.</li>
+					</ol>
+				</section>
+				<section class="music-player-panel" aria-label="Now playing">
+					<div class="record-art" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="47"/><circle cx="50" cy="50" r="31"/><circle cx="50" cy="50" r="14"/><circle cx="50" cy="50" r="4"/></svg></div>
+					<p class="eyebrow">NOW PLAYING</p>
+					<h3 id="music-title">Choose a track</h3>
+					<p id="music-status" class="status-message" role="status" aria-live="polite">Audio stays on this device.</p>
+					<audio id="music-audio" preload="metadata"></audio>
+					<div class="music-timeline">
+						<span id="music-current-time">0:00</span>
+						<input id="music-seek" type="range" min="0" max="1000" value="0" aria-label="Seek" disabled />
+						<span id="music-duration">0:00</span>
+					</div>
+					<div class="music-controls">
+						<button class="icon-button" id="music-previous" type="button" title="Previous track" aria-label="Previous track" disabled>
+							<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M5 5v14M19 6l-9 6 9 6V6Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
+						</button>
+						<button class="primary-button" id="music-play" type="button" aria-label="Play" disabled>Play</button>
+						<button class="icon-button" id="music-next" type="button" title="Next track" aria-label="Next track" disabled>
+							<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M19 5v14M5 6l9 6-9 6V6Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
+						</button>
+					</div>
+				</section>
+			</div>
 		</section>
 	</main>
+	<script src="../scripts/music.ts"></script>
 </Layout>

@@ -9,6 +9,19 @@ import Layout from "../Layouts/Layout.astro";
 				<img src="/img/obsidian.svg" alt="" width="20" height="20" />
 				<span>Obsidian</span>
 			</a>
+			<details class="browser-app-menu">
+				<summary aria-label="Open Games menu">
+					<img src="/img/obsidian.svg" alt="" width="20" height="20" />
+					<span>Games</span>
+					<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+				</summary>
+				<div class="browser-app-menu-panel">
+					<a href="/games" class="browser-app-menu-link">
+						<img src="/img/obsidian.svg" alt="" width="22" height="22" />
+						<span><strong>Games</strong><small>Open game library</small></span>
+					</a>
+				</div>
+			</details>
 			<button class="icon-button" id="browser-new-tab" type="button" title="New tab" aria-label="New tab">
 				<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
 			</button>
@@ -23,7 +36,7 @@ import Layout from "../Layouts/Layout.astro";
 			<button class="icon-button" id="browser-reload" type="button" title="Reload" aria-label="Reload">
 				<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5m-4.1-2a7 7 0 0 1 11.6-3L20 12M4 12l3.5 5a7 7 0 0 0 11.6-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg>
 			</button>
-			<button class="icon-button" id="browser-fullscreen" type="button" title="Fullscreen" aria-label="Enter fullscreen">
+			<button class="icon-button" id="browser-fullscreen" type="button" title="Fullscreen" aria-label="Enter fullscreen" aria-pressed="false">
 				<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
 			</button>
 			<form id="browser-nav">

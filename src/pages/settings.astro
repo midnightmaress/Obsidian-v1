@@ -3,7 +3,7 @@ import Layout from "../Layouts/Layout.astro";
 ---
 
 <Layout title="Obsidian Settings">
-	<main class="app-shell" id="settings-app">
+	<main class="app-shell settings-app">
 		<header class="app-header">
 			<a class="app-brand" href="/">
 				<img src="/img/obsidian.svg" alt="" />
@@ -13,34 +13,39 @@ import Layout from "../Layouts/Layout.astro";
 				<svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1V10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" /></svg>
 			</a>
 		</header>
-		<form id="settings-form" class="settings-list">
-			<section class="setting-row">
-				<div><h2>Proxy engine</h2><p>Choose the engine used for web and game pages.</p></div>
-				<select class="select-field" id="proxy-engine" name="proxyEngine">
-					<option value="scramjet">Scramjet</option>
-					<option value="ultraviolet">Ultraviolet</option>
-				</select>
-			</section>
-			<section class="setting-row">
-				<div><h2>Search engine</h2><p>Used when a search phrase is entered instead of a URL.</p></div>
-				<select class="select-field" id="search-engine" name="searchEngine">
-					<option value="duckduckgo">DuckDuckGo</option>
-					<option value="google">Google</option>
-					<option value="bing">Bing</option>
-					<option value="brave">Brave</option>
-					<option value="yahoo">Yahoo</option>
-				</select>
-			</section>
-			<section class="setting-row">
-				<div><h2>Reduce motion</h2><p>Particles also respect your operating system motion preference.</p></div>
-				<label><input id="reduce-motion" type="checkbox" /> Reduce motion</label>
-			</section>
-			<div class="app-actions">
-				<button class="primary-button" type="submit">Save settings</button>
-				<button class="quiet-button" id="settings-reset" type="button">Reset</button>
-			</div>
-			<p id="settings-status" class="status-message" role="status" aria-live="polite"></p>
-		</form>
+		<section class="settings-content" aria-labelledby="appearance-heading">
+			<p class="eyebrow">PERSONALIZE YOUR SPACE</p>
+			<h2 class="page-heading" id="appearance-heading">Appearance</h2>
+			<p class="status-message">Choose a glass palette for the whole workspace.</p>
+			<fieldset class="theme-picker">
+				<legend class="sr-only">Color theme</legend>
+				<label class="theme-choice">
+					<input type="radio" name="theme" value="midnight" />
+					<span class="theme-swatch" data-swatch="midnight" aria-hidden="true"></span>
+					<span class="theme-copy"><strong>Midnight</strong><small>Deep charcoal · mint glass</small></span>
+					<span class="theme-check" aria-hidden="true">✓</span>
+				</label>
+				<label class="theme-choice">
+					<input type="radio" name="theme" value="frost" />
+					<span class="theme-swatch" data-swatch="frost" aria-hidden="true"></span>
+					<span class="theme-copy"><strong>Frost</strong><small>Soft silver · bright blue</small></span>
+					<span class="theme-check" aria-hidden="true">✓</span>
+				</label>
+				<label class="theme-choice">
+					<input type="radio" name="theme" value="ocean" />
+					<span class="theme-swatch" data-swatch="ocean" aria-hidden="true"></span>
+					<span class="theme-copy"><strong>Ocean</strong><small>Deep water · clear cyan</small></span>
+					<span class="theme-check" aria-hidden="true">✓</span>
+				</label>
+				<label class="theme-choice">
+					<input type="radio" name="theme" value="sunset" />
+					<span class="theme-swatch" data-swatch="sunset" aria-hidden="true"></span>
+					<span class="theme-copy"><strong>Sunset</strong><small>Smoked plum · warm coral</small></span>
+					<span class="theme-check" aria-hidden="true">✓</span>
+				</label>
+			</fieldset>
+			<p id="theme-status" class="status-message" role="status" aria-live="polite"></p>
+		</section>
 	</main>
-	<script src="../scripts/settingsApp.ts"></script>
+	<script src="../scripts/settings.ts"></script>
 </Layout>

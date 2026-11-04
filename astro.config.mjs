@@ -5,17 +5,32 @@ import { server as wisp } from "@mercuryworkshop/wisp-js/server";
 import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import sirv from "sirv";
+import { WebSocketServer } from "ws";
+import { attachChatSocket, handleChatApi } from "./src/server/chat-room.js";
 
 function customDevServer() {
+    const chatSockets = new WebSocketServer({ noServer: true, maxPayload: 2 * 1024 * 1024 });
     return {
         name: 'custom-dev-server',
         hooks: {
             'astro:server:setup': ({ server }) => {
+                server.middlewares.use('/api/chat', (req, res, next) => {
+                    if (!req.url.startsWith('/api/chat')) return next();
+                    void handleChatApi(req, res);
+                });
 
                 server.httpServer.on('upgrade', (req, socket, head) => {
-                    if (req.url.startsWith("/wisp/")) {
-                        wisp.routeRequest(req, socket, head);
+                    const pathname = new URL(req.url, 'http://localhost').pathname;
+                    if (pathname === '/chat-ws') {
+                        try {
+                            if (req.headers.origin && new URL(req.headers.origin).host !== req.headers.host) return socket.destroy();
+                        } catch {
+                            return socket.destroy();
+                        }
+                        chatSockets.handleUpgrade(req, socket, head, client => attachChatSocket(client, req));
+                        return;
                     }
+                    if (pathname.startsWith('/wisp/')) wisp.routeRequest(req, socket, head);
                 });
 
                 server.middlewares.use((req, res, next) => {
